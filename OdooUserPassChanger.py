@@ -24,7 +24,7 @@ dbhost = input("Enter the host[localhost]: ") or "localhost"
 usertoupdate = input("Enter the user you want to change the password: ")
 newpass = getpass.getpass("Enter the new password for "+usertoupdate+": ")
 
-newpass_crypt = CryptContext(['pbkdf2_sha512']).encrypt(newpass)
+newpass_crypt = CryptContext(['pbkdf2_sha512']).hash(newpass)
 
 """
 try to connect with the DB and make the update with the new password.
@@ -36,7 +36,7 @@ try:
         ' password='" + dbpass + "'")
     print("Opened database successfully")
     cur = conn.cursor()
-    cur.execute("UPDATE res_users SET password_crypt = '"+newpass_crypt+"\
+    cur.execute("UPDATE res_users SET password = '"+newpass_crypt+"\
         ' WHERE login = '"+usertoupdate+"'")
     conn.commit()
     conn.close()
